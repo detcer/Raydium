@@ -12,6 +12,7 @@
     "init": "node index.js init",
     "config": "node index.js config",
     "snipe": "node index.js snipe-new",
+    "watch-liquidity": "node watch-liquidity.js",
     "portfolio": "node index.js portfolio",
     "security-check": "node security-utils.js check",
     "backup": "node security-utils.js backup",
