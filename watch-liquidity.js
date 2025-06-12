@@ -3,7 +3,7 @@
 require('dotenv').config();
 const { Connection, Keypair } = require('@solana/web3.js');
 const bs58 = require('bs58');
-const chalk = require('chalk');
+const logger = require('./logger');
 const { RaydiumAPI } = require('./raydium');
 
 async function watchLiquidity() {
@@ -18,7 +18,7 @@ async function watchLiquidity() {
       const bytes = bs58.decode(privateKey);
       keypair = Keypair.fromSecretKey(bytes);
     } catch (err) {
-      console.log(chalk.red('Неверный формат приватного ключа, генерируем случайный.'));
+      logger.warn('Неверный формат приватного ключа, генерируем случайный.');
       keypair = Keypair.generate();
     }
   } else {
@@ -26,11 +26,15 @@ async function watchLiquidity() {
   }
 
   const raydium = new RaydiumAPI(connection);
-  await raydium.initializeRaydium(keypair);
+  try {
+    await raydium.initializeRaydium(keypair);
+  } catch (err) {
+    logger.error(`Ошибка инициализации Raydium SDK: ${err.message}`);
+  }
 
   let knownPools = await raydium.getAllPools();
   const knownAddresses = new Set(knownPools.map(p => p.address.toString()));
-  console.log(chalk.green(`Старт мониторинга. Известно пулов: ${knownAddresses.size}`));
+  logger.success(`Старт мониторинга. Известно пулов: ${knownAddresses.size}`);
 
   while (true) {
     try {
@@ -38,16 +42,16 @@ async function watchLiquidity() {
       const newPools = currentPools.filter(p => !knownAddresses.has(p.address.toString()));
       if (newPools.length > 0) {
         for (const pool of newPools) {
-          console.log(chalk.bold.yellow('Обнаружен новый пул!'));
-          console.log(`Токен: ${pool.tokenMint.toString()} | Ликвидность: ${pool.liquidity} SOL`);
+          logger.token('Обнаружен новый пул!');
+          logger.info(`Токен: ${pool.tokenMint.toString()} | Ликвидность: ${pool.liquidity} SOL`);
           knownAddresses.add(pool.address.toString());
         }
       }
     } catch (err) {
-      console.log(chalk.red(`Ошибка при получении пулов: ${err.message}`));
+        logger.error(`Ошибка при получении пулов: ${err.message}`);
     }
     await new Promise(r => setTimeout(r, 5000));
   }
 }
 
-watchLiquidity().catch(err => console.error(err));
+watchLiquidity().catch(err => logger.error(err.message));
