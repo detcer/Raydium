@@ -1,0 +1,45 @@
+{
+  "name": "solana-sniper-bot",
+  "version": "1.0.0",
+  "description": "Solana Sniper Bot для автоматической торговли на Raydium DEX",
+  "main": "index.js",
+  "bin": {
+    "solsniper": "./index.js"
+  },
+  "scripts": {
+    "quickstart": "node quick-start.js",
+    "start": "node index.js start",
+    "init": "node index.js init",
+    "config": "node index.js config",
+    "snipe": "node index.js snipe-new",
+    "portfolio": "node index.js portfolio",
+    "security-check": "node security-utils.js check",
+    "backup": "node security-utils.js backup",
+    "generate-wallet": "node security-utils.js generate",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "solana",
+    "raydium",
+    "dex",
+    "trading",
+    "bot",
+    "sniper"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@raydium-io/raydium-sdk-v2": "^0.1.138-alpha",
+    "@solana/spl-token": "^0.3.7",
+    "@solana/web3.js": "^1.73.3",
+    "axios": "^1.3.4",
+    "bn.js": "^5.2.1",
+    "bs58": "^5.0.0",
+    "chalk": "^4.1.2",
+    "commander": "^10.0.0",
+    "dotenv": "^16.0.3",
+    "inquirer": "^8.2.5",
+    "ora": "^5.4.1",
+    "decimal.js": "^10.4.3"
+  }
+}

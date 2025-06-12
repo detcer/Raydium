@@ -1,0 +1,12 @@
+{
+  "network": "mainnet-beta",
+  "rpcUrl": "https://api.mainnet-beta.solana.com",
+  "maxBuyTax": 60,
+  "maxSellTax": 60,
+  "minLiquidityInSol": 0.0001,
+  "buyAmount": 0.001,
+  "autoSellAt": 3,
+  "stopLossAt": 30,
+  "slippage": 80,
+  "autoBuy": true
+}
